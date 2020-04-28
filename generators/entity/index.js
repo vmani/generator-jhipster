@@ -236,7 +236,7 @@ class EntityGenerator extends BaseBlueprintGenerator {
             },
 
             validateReactiveCompatibility() {
-                if (this.context.reactive && !['mongodb', 'cassandra', 'couchbase', 'neo4j'].includes(this.context.databaseType)) {
+                if (this.context.reactive && !['mongodb', 'cassandra', 'couchbase', 'neo4j', 'sql'].includes(this.context.databaseType)) {
                     this.error(
                         chalk.red(
                             `The entity generator doesn't support reactive apps with databases of type ${this.context.databaseType} at the moment`
@@ -712,7 +712,7 @@ class EntityGenerator extends BaseBlueprintGenerator {
                 );
                 context.jhiTablePrefix = this.getTableName(context.jhiPrefix);
                 context.reactiveRepositories =
-                    context.reactive && ['mongodb', 'cassandra', 'couchbase', 'neo4j'].includes(context.databaseType);
+                    context.reactive && ['mongodb', 'cassandra', 'couchbase', 'neo4j', 'sql'].includes(context.databaseType);
 
                 context.fieldsContainDate = false;
                 context.fieldsContainInstant = false;
@@ -738,6 +738,9 @@ class EntityGenerator extends BaseBlueprintGenerator {
                 if (!context.relationships) {
                     context.relationships = [];
                 }
+                var humanDatabaseNames = {"mongodb": 'MongoDB', 'cassandra': 'Cassandra', 'sql': 'SQL', 'couchbase': 'Couchbase', 'neo4j': 'Neo4j'};
+                context.humanDatabaseType = humanDatabaseNames[context.databaseType];
+
                 context.differentRelationships = {};
                 context.i18nToLoad = [context.entityInstance];
                 context.i18nKeyPrefix = `${context.angularAppName}.${context.entityTranslationKey}`;

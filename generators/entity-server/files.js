@@ -173,7 +173,7 @@ const serverFiles = {
         },
         {
             condition: generator =>
-                (!generator.reactive || !['mongodb', 'cassandra', 'couchbase', 'neo4j'].includes(generator.databaseType)) &&
+                (!generator.reactive || !['mongodb', 'cassandra', 'couchbase', 'neo4j', 'sql'].includes(generator.databaseType)) &&
                 !generator.embedded,
             path: SERVER_MAIN_SRC_DIR,
             templates: [
@@ -186,7 +186,7 @@ const serverFiles = {
         {
             condition: generator =>
                 generator.reactive &&
-                ['mongodb', 'cassandra', 'couchbase', 'neo4j'].includes(generator.databaseType) &&
+                ['mongodb', 'cassandra', 'couchbase', 'neo4j', 'sql'].includes(generator.databaseType) &&
                 !generator.embedded,
             path: SERVER_MAIN_SRC_DIR,
             templates: [
@@ -195,6 +195,17 @@ const serverFiles = {
                     renameTo: generator => `${generator.packageFolder}/repository/${generator.entityClass}Repository.java`,
                 },
             ],
+        },
+        {
+            condition: generator =>
+                generator.reactive && ['sql'].includes(generator.databaseType) && !generator.embedded,
+            path: SERVER_MAIN_SRC_DIR,
+            templates: [
+                {
+                    file: 'package/repository/EntityReactiveRepositoryInternalImpl.java',
+                    renameTo: generator => `${generator.packageFolder}/repository/${generator.entityClass}RepositoryInternalImpl.java`
+                }
+            ]
         },
         {
             condition: generator => generator.service === 'serviceImpl' && !generator.embedded,
