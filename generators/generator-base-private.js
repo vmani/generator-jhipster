@@ -1406,7 +1406,7 @@ module.exports = class extends Generator {
      * @param {any} context - generator context
      */
     copyFilteringFlag(from, to, context = this) {
-        if (context.databaseType === 'sql' && context.service !== 'no') {
+        if (context.databaseType === 'sql' && context.service !== 'no' && !context.reactive) {
             to.jpaMetamodelFiltering = from.jpaMetamodelFiltering;
         } else {
             to.jpaMetamodelFiltering = false;
