@@ -430,6 +430,8 @@ public class DatabaseConfiguration {
         List<Object> converters = new ArrayList<>(dialect.getConverters());
         converters.add(new InstantWriteConverter());
         converters.add(new InstantReadConverter());
+        converters.add(new DurationWriteConverter());
+        converters.add(new DurationReadConverter());
         converters.addAll(R2dbcCustomConversions.STORE_CONVERTERS);
         return new R2dbcCustomConversions(
             CustomConversions.StoreConversions.of(dialect.getSimpleTypeHolder(), converters),
@@ -450,6 +452,23 @@ public class DatabaseConfiguration {
         @Override
         public Instant convert(LocalDateTime localDateTime) {
             return localDateTime.toInstant(ZoneOffset.UTC);
+        }
+    }
+
+    @WritingConverter
+    public static class DurationWriteConverter implements Converter<Duration, Long> {
+
+        @Override
+        public Long convert(Duration source) {
+            return source != null ? source.toMillis() : null;
+        }
+    }
+    @ReadingConverter
+    public static class DurationReadConverter implements Converter<Long, Duration> {
+
+        @Override
+        public Duration convert(Long source) {
+            return source != null ? Duration.ofMillis(source) : null;
         }
     }
 <%_ } _%>
