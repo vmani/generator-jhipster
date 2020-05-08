@@ -1026,6 +1026,16 @@ const serverFiles = {
             ],
         },
         {
+            condition: generator => generator.databaseType === 'sql' && generator.reactive,
+            path: SERVER_MAIN_SRC_DIR,
+            templates: [
+                {
+                    file: 'package/service/ColumnConverter.java',
+                    renameTo: generator => `${generator.javaDir}service/ColumnConverter.java`,
+                },
+            ],
+        },
+        {
             condition: generator => !generator.reactive && generator.databaseType === 'couchbase',
             path: SERVER_MAIN_SRC_DIR,
             templates: [
