@@ -136,12 +136,12 @@ const R2DBC_DB_OPTIONS = [
         name: 'MySQL',
     },
     {
-        value: 'postgresql',
-        name: 'PostgreSQL',
+        value: 'mariadb',
+        name: 'MariaDB',
     },
     {
-        value: 'mssql',
-        name: 'Microsoft SQL Server',
+        value: 'postgresql',
+        name: 'PostgreSQL',
     },
 ];
 
