@@ -131,7 +131,9 @@ import java.sql.SQLException;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -433,6 +435,7 @@ public class DatabaseConfiguration {
         converters.add(new InstantReadConverter());
         converters.add(new DurationWriteConverter());
         converters.add(new DurationReadConverter());
+        converters.add(new ZonedDateTimeReadConverter());
         converters.addAll(R2dbcCustomConversions.STORE_CONVERTERS);
         return new R2dbcCustomConversions(
             CustomConversions.StoreConversions.of(dialect.getSimpleTypeHolder(), converters),
@@ -453,6 +456,16 @@ public class DatabaseConfiguration {
         @Override
         public Instant convert(LocalDateTime localDateTime) {
             return localDateTime.toInstant(ZoneOffset.UTC);
+        }
+    }
+
+    @ReadingConverter
+    public static class ZonedDateTimeReadConverter implements Converter<LocalDateTime, ZonedDateTime> {
+
+        @Override
+        public ZonedDateTime convert(LocalDateTime localDateTime) {
+            // Be aware - we are using the system default timezone
+            return ZonedDateTime.of(localDateTime, ZoneId.systemDefault());
         }
     }
 
