@@ -1034,8 +1034,8 @@ const serverFiles = {
                     renameTo: generator => `${generator.javaDir}service/ColumnConverter.java`,
                 },
                 {
-                    file: 'package/service/SelectCreator.java',
-                    renameTo: generator => `${generator.javaDir}service/SelectCreator.java`,
+                    file: 'package/service/EntityManager.java',
+                    renameTo: generator => `${generator.javaDir}service/EntityManager.java`,
                 },
             ],
         },
