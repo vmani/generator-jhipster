@@ -271,6 +271,7 @@ public class UserResourceIT <% if (databaseType === 'cassandra') { %>extends Abs
         <%_ } _%>
         return user;
     }
+    <%_ if (databaseType === 'sql' && reactive) { _%>
 
     /**
      * Delete all the users from the database.
@@ -279,6 +280,7 @@ public class UserResourceIT <% if (databaseType === 'cassandra') { %>extends Abs
         em.deleteAll("<%= jhiTablePrefix %>_user_authority").block();
         em.deleteAll(User.class).block();
     }
+    <%_ } _%>
 
     @BeforeEach
     public void initTest() {
