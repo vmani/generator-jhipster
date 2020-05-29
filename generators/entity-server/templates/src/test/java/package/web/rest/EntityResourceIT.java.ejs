@@ -1220,7 +1220,7 @@ public class <%= entityClass %>ResourceIT <% if (databaseType === 'cassandra') {
             .andExpect(jsonPath("$.[*].<%= field.fieldName %>").value(hasItem(<% 
                     if ((field.fieldType === 'byte[]' || field.fieldType === 'ByteBuffer') && field.fieldTypeBlobContent !== 'text') { %>Base64Utils.encodeToString(<% } else 
                         if (field.fieldType === 'ZonedDateTime') { %>sameInstant(<% } else
-                            if (fields[idx].fieldType === 'BigDecimal') { %>sameNumber(<% } %><%= 'DEFAULT_' + field.fieldNameUnderscored.toUpperCase() %><% 
+                            if (field.fieldType === 'BigDecimal') { %>sameNumber(<% } %><%= 'DEFAULT_' + field.fieldNameUnderscored.toUpperCase() %><%
                         if ((field.fieldType === 'byte[]' || field.fieldType === 'ByteBuffer') && field.fieldTypeBlobContent !== 'text') { %><% 
                             if (databaseType === 'cassandra') { %>.array()<% } %>)<% } else 
                                 if (field.fieldType === 'Integer') { %><% } else 
