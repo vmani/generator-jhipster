@@ -41,7 +41,7 @@
         <%_ } else { _%>
         <createTable tableName="<%= entityTableName %>" remarks="<%- formatAsLiquibaseRemarks(javadoc) %>">
         <%_ } _%>
-            <column name="id" type="<%= databasePKType %>" <%_ if (primaryKeyType === 'String' ) { _%> <% } else if (isAutoIncrementDB) { %> autoIncrement="${autoIncrement}" <%_ } %>>
+            <column name="id" type="<%= databasePKType %>" <%_ if (primaryKeyType === 'String' ) { _%> <% } else if (reactive) { %> autoIncrement="${supportsAutoIncrement}" <%_ } else if (isAutoIncrementDB) { %> autoIncrement="${autoIncrement}" <%_ } %>>
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <%_ for (idx in fields) {

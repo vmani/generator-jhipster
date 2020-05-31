@@ -18,6 +18,9 @@
     <property name="now" value="GETDATE()" dbms="mssql"/>
     <%_ } _%>
 
+    <property name="supportsAutoIncrement" value="true" dbms="h2, mariadb, mysql, postgresql" />
+    <property name="supportsAutoIncrement" value="false" dbms="oracle, mssql" />
+
     <property name="floatType" value="float4" dbms="postgresql, h2"/>
     <property name="floatType" value="float" dbms="mysql, oracle, mssql, mariadb"/>
     <%_ if (prodDatabaseType === 'postgresql') { _%>
