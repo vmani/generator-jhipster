@@ -1070,7 +1070,7 @@ class EntityGenerator extends BaseBlueprintGenerator {
                         }
                     }
                     if (otherEntityData) {
-                        this.copyFilteringFlag(otherEntityData, relationship, { ...otherEntityData, databaseType: context.databaseType });
+                        this.copyFilteringFlag(otherEntityData, relationship, { ...otherEntityData, databaseType: context.databaseType, reactive: context.reactive });
                     }
                     // Load in-memory data for root
                     if (relationship.relationshipType === 'many-to-many' && relationship.ownerSide) {
