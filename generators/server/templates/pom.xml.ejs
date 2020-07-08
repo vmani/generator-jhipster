@@ -52,6 +52,10 @@
             </releases>
         </repository>
         <%_ } _%>
+        <repository>
+            <id>jitpack</id>
+            <url>https://jitpack.io</url>
+        </repository>
         <!-- jhipster-needle-maven-repository -->
     </repositories>
 
@@ -189,7 +193,7 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>io.github.jhipster</groupId>
+                <groupId>com.github.jhipster.jhipster</groupId>
                 <artifactId>jhipster-dependencies</artifactId>
                 <version>${jhipster-dependencies.version}</version>
                 <type>pom</type>
@@ -201,8 +205,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>io.github.jhipster</groupId>
+            <groupId>com.github.jhipster.jhipster</groupId>
             <artifactId>jhipster-framework</artifactId>
+            <version>${jhipster-dependencies.version}</version>
 <%_ // TODO : remove dependency from jhipster-framework
     if (reactive) { _%>
             <exclusions>
