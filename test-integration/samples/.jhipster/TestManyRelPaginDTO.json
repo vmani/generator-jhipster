@@ -10,7 +10,12 @@
             "otherEntityRelationshipName": "testManyRelPaginDTO"
         }
     ],
-    "fields": [],
+    "fields": [
+        {
+            "fieldName": "springDataR2dbc390",
+            "fieldType": "String"
+        }
+    ],
     "changelogDate": "20160208210534",
     "dto": "mapstruct",
     "service": "serviceImpl",
