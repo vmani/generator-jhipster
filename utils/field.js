@@ -153,6 +153,7 @@ function prepareFieldForTemplates(entityWithConfig, field, generator) {
     _.defaults(field, {
         fieldNameCapitalized: _.upperFirst(field.fieldName),
         fieldNameUnderscored: _.snakeCase(field.fieldName),
+        fieldNameLowerCase: _.lowerCase(field.fieldName),
         fieldNameHumanized: fieldOptions.fieldNameHumanized || _.startCase(field.fieldName),
     });
     const fieldType = field.fieldType;
@@ -160,19 +161,19 @@ function prepareFieldForTemplates(entityWithConfig, field, generator) {
     field.fieldIsEnum = fieldIsEnum(fieldType);
 
     if (field.fieldNameAsDatabaseColumn === undefined) {
-        const fieldNameUnderscored = _.snakeCase(field.fieldName);
+        const fieldNameLowerCase = field.fieldName.toLowerCase();
         const jhiFieldNamePrefix = generator.getColumnName(entityWithConfig.jhiPrefix);
-        if (isReservedTableName(fieldNameUnderscored, entityWithConfig.prodDatabaseType)) {
+        if (isReservedTableName(fieldNameLowerCase, entityWithConfig.prodDatabaseType)) {
             if (!jhiFieldNamePrefix) {
                 generator.warning(
-                    `The field name '${fieldNameUnderscored}' is regarded as a reserved keyword, but you have defined an empty jhiPrefix. This might lead to a non-working application.`
+                    `The field name '${fieldNameLowerCase}' is regarded as a reserved keyword, but you have defined an empty jhiPrefix. This might lead to a non-working application.`
                 );
-                field.fieldNameAsDatabaseColumn = fieldNameUnderscored;
+                field.fieldNameAsDatabaseColumn = fieldNameLowerCase;
             } else {
-                field.fieldNameAsDatabaseColumn = `${jhiFieldNamePrefix}_${fieldNameUnderscored}`;
+                field.fieldNameAsDatabaseColumn = `${jhiFieldNamePrefix}_${fieldNameLowerCase}`;
             }
         } else {
-            field.fieldNameAsDatabaseColumn = fieldNameUnderscored;
+            field.fieldNameAsDatabaseColumn = fieldNameLowerCase;
         }
         field.columnName = field.fieldNameAsDatabaseColumn;
     }

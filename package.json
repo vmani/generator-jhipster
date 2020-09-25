@@ -1,5 +1,5 @@
 {
-    "name": "generator-jhipster",
+    "name": "generator-jhipster-cl",
     "version": "6.10.3",
     "description": "Spring Boot + Angular/React in one handy generator",
     "files": [
@@ -32,11 +32,11 @@
     },
     "main": "cli/index.js",
     "bin": {
-        "jhipster": "./cli/jhipster.js"
+        "cl-jhipster": "./cli/jhipster.js"
     },
     "repository": {
         "type": "git",
-        "url": "git://github.com/jhipster/generator-jhipster.git"
+        "url": "git://github.com/vmani/generator-jhipster.git"
     },
     "scripts": {
         "prettier:format": "prettier --write \"{,**/}*.{js,json,md,yml,java}\"",

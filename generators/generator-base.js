@@ -1548,7 +1548,7 @@ module.exports = class JHipsterBaseGenerator extends PrivateBase {
      * @param {string} value - table name string
      */
     getTableName(value) {
-        return this.hibernateSnakeCase(value);
+        return this.hibernateLowerCase(value);
     }
 
     /**
@@ -1557,7 +1557,7 @@ module.exports = class JHipsterBaseGenerator extends PrivateBase {
      * @param {string} value - table column name string
      */
     getColumnName(value) {
-        return this.hibernateSnakeCase(value);
+        return this.hibernateLowerCase(value);
     }
 
     /**

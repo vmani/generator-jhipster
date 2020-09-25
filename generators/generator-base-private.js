@@ -703,6 +703,22 @@ module.exports = class JHipsterBasePrivateGenerator extends Generator {
     }
 
     /**
+     * get hibernate LowerCase in JHipster preferred style.
+     * We had to customize this for CL since all their tables were lowercase - no underscores
+     *
+     * @param {string} value - table column name or table name string
+     * @returns hibernate LowerCase in JHipster preferred style
+     */
+    hibernateLowerCase(value) {
+      let res = '';
+      if (value) {
+          value = value.replace('.', '_');
+          res = value.toLowerCase();
+      }
+      return res;
+    }
+
+    /**
      * Function to issue a https get request, and process the result
      *
      *  @param {string} url - the url to fetch

@@ -47,6 +47,13 @@ const getFieldNameUndercored = fields =>
         })
     );
 
+  const getFieldNameLowercase = fields =>
+      ['id'].concat(
+          fields.map(field => {
+              return field.fieldName.toLowerCase();
+          })
+      );
+
 function askForMicroserviceJson() {
     const context = this.context;
     if (this.jhipsterConfig.applicationType !== 'gateway' || context.entityExisted) {
@@ -467,7 +474,7 @@ function askForField() {
                 if (input.charAt(0) === input.charAt(0).toUpperCase()) {
                     return 'Your field name cannot start with an upper case letter';
                 }
-                if (input === 'id' || getFieldNameUndercored(this.entityConfig.fields).includes(_.snakeCase(input))) {
+                if (input === 'id' || getFieldNameLowercase(this.entityConfig.fields).includes(input.toLowerCase()) {
                     return 'Your field name cannot use an already existing field name';
                 }
                 if ((clientFramework === undefined || clientFramework === ANGULAR) && isReservedFieldName(input, ANGULAR)) {
@@ -927,7 +934,7 @@ function askForRelationship() {
                 if (input.charAt(0) === input.charAt(0).toUpperCase()) {
                     return 'Your relationship cannot start with an upper case letter';
                 }
-                if (input === 'id' || getFieldNameUndercored(this.entityConfig.fields).includes(_.snakeCase(input))) {
+                if (input === 'id' || getFieldNameLowercase(this.entityConfig.fields).includes(input.toLowerCase())) {
                     return 'Your relationship cannot use an already existing field name';
                 }
                 if (isReservedTableName(input, 'JAVA')) {
