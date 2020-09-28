@@ -474,7 +474,7 @@ function askForField() {
                 if (input.charAt(0) === input.charAt(0).toUpperCase()) {
                     return 'Your field name cannot start with an upper case letter';
                 }
-                if (input === 'id' || getFieldNameLowercase(this.entityConfig.fields).includes(input.toLowerCase()) {
+                if (input === 'id' || getFieldNameLowercase(this.entityConfig.fields).includes(input.toLowerCase())) {
                     return 'Your field name cannot use an already existing field name';
                 }
                 if ((clientFramework === undefined || clientFramework === ANGULAR) && isReservedFieldName(input, ANGULAR)) {

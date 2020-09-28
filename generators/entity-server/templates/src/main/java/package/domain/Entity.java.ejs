@@ -181,8 +181,8 @@ public class <%= asEntity(entityClass) %> implements Serializable {
         <%_ if (prodDatabaseType === 'mysql' || prodDatabaseType === 'mariadb') { _%>
     @GeneratedValue(strategy = GenerationType.IDENTITY)
         <%_ }  else { _%>
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "<%= entityTableName %>IdSeq")
+    @SequenceGenerator(name = "<%= entityTableName %>IdSeq",sequenceName="<%= entityTableName %>_id_seq", allocationSize = 1)
         <%_ } _%>
     <%_ } _%>
     <%_ if (databaseType === 'couchbase' && !embedded) { _%>

@@ -31,6 +31,7 @@ import com.datastax.oss.driver.api.mapper.annotations.PartitionKey;
 import com.datastax.oss.driver.api.mapper.entity.naming.NamingConvention;
 <%_ } _%>
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.apache.commons.lang3.StringUtils;
 <%_ if (databaseType === 'sql' && !reactive) { _%>
 import org.hibernate.annotations.BatchSize;
@@ -134,8 +135,8 @@ public class <%= asEntity('User') %><% if (databaseType === 'sql' || databaseTyp
         <%_ if (authenticationType !== 'oauth2' && (prodDatabaseType === 'mysql' || prodDatabaseType === 'mariadb')) { _%>
     @GeneratedValue(strategy = GenerationType.IDENTITY)
         <%_ } else if (authenticationType !== 'oauth2') { _%>
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userIdSeq")
+    @SequenceGenerator(name = "userIdSeq",sequenceName="app_user_id_seq", allocationSize = 1)
         <%_ } _%>
     <%_ } _%>
     <%_ if (searchEngine === 'elasticsearch' && authenticationType === 'oauth2') { _%>
@@ -194,20 +195,20 @@ public class <%= asEntity('User') %><% if (databaseType === 'sql' || databaseTyp
     @NotNull
     @Size(min = 60, max = 60)
     <%_ if (databaseType === 'sql' && !reactive) { _%>
-    @Column(name = "password_hash", length = 60, nullable = false)
+    @Column(name = "passwordhash", length = 60, nullable = false)
     <%_ } _%>
     <%_ if (databaseType === 'sql' && reactive) { _%>
-    @Column("password_hash")
+    @Column("passwordhash")
     <%_ } _%>
     private String password;
 <%_ } _%>
 
     @Size(max = 50)
     <%_ if (databaseType === 'sql' && !reactive) { _%>
-    @Column(name = "first_name", length = 50)
+    @Column(name = "firstname", length = 50)
     <%_ } _%>
     <%_ if (databaseType === 'sql' && reactive) { _%>
-    @Column("first_name")
+    @Column("firstname")
     <%_ } _%>
     <%_ if (databaseType === 'mongodb' || databaseType === 'couchbase') { _%>
     @Field("first_name")
@@ -222,10 +223,10 @@ public class <%= asEntity('User') %><% if (databaseType === 'sql' || databaseTyp
 
     @Size(max = 50)
     <%_ if (databaseType === 'sql' && !reactive) { _%>
-    @Column(name = "last_name", length = 50)
+    @Column(name = "lastname", length = 50)
     <%_ } _%>
     <%_ if (databaseType === 'sql' && reactive) { _%>
-    @Column("last_name")
+    @Column("lastname")
     <%_ } _%>
     <%_ if (databaseType === 'mongodb' || databaseType === 'couchbase') { _%>
     @Field("last_name")
@@ -258,10 +259,10 @@ public class <%= asEntity('User') %><% if (databaseType === 'sql' || databaseTyp
 
     @Size(min = 2, max = 10)
     <%_ if (databaseType === 'sql' && !reactive) { _%>
-    @Column(name = "lang_key", length = 10)
+    @Column(name = "langkey", length = 10)
     <%_ } _%>
     <%_ if (databaseType === 'sql' && reactive) { _%>
-    @Column("lang_key")
+    @Column("langkey")
     <%_ } _%>
     <%_ if (databaseType === 'mongodb' || databaseType === 'couchbase') { _%>
     @Field("lang_key")
@@ -277,10 +278,10 @@ public class <%= asEntity('User') %><% if (databaseType === 'sql' || databaseTyp
 
     @Size(max = 256)
     <%_ if (databaseType === 'sql' && !reactive) { _%>
-    @Column(name = "image_url", length = 256)
+    @Column(name = "imageurl", length = 256)
     <%_ } _%>
     <%_ if (databaseType === 'sql' && reactive) { _%>
-    @Column("image_url")
+    @Column("imageurl")
     <%_ } _%>
     <%_ if (databaseType === 'mongodb' || databaseType === 'couchbase') { _%>
     @Field("image_url")
@@ -294,10 +295,10 @@ public class <%= asEntity('User') %><% if (databaseType === 'sql' || databaseTyp
 
     @Size(max = 20)
     <%_ if (databaseType === 'sql' && !reactive) { _%>
-    @Column(name = "activation_key", length = 20)
+    @Column(name = "activationkey", length = 20)
     <%_ } _%>
     <%_ if (databaseType === 'sql' && reactive) { _%>
-    @Column("activation_key")
+    @Column("activationkey")
     <%_ } _%>
     <%_ if (databaseType === 'mongodb' || databaseType === 'couchbase') { _%>
     @Field("activation_key")
@@ -313,10 +314,10 @@ public class <%= asEntity('User') %><% if (databaseType === 'sql' || databaseTyp
 
     @Size(max = 20)
     <%_ if (databaseType === 'sql' && !reactive) { _%>
-    @Column(name = "reset_key", length = 20)
+    @Column(name = "resetkey", length = 20)
     <%_ } _%>
     <%_ if (databaseType === 'sql' && reactive) { _%>
-    @Column("reset_key")
+    @Column("resetkey")
     <%_ } _%>
     <%_ if (databaseType === 'mongodb' || databaseType === 'couchbase') { _%>
     @Field("reset_key")
@@ -331,14 +332,28 @@ public class <%= asEntity('User') %><% if (databaseType === 'sql' || databaseTyp
     private String resetKey;
 
     <%_ if (databaseType === 'sql' || (databaseType === 'cassandra' && reactive)) { _%>
-    @Column(<% if (!reactive) { %>name = <% } %>"reset_date")
+    @Column(<% if (!reactive) { %>name = <% } %>"resetdate")
     <%_ } else if (databaseType === 'mongodb' || databaseType === 'couchbase') { _%>
     @Field("reset_date")
     <%_ } else if (databaseType === 'neo4j') { _%>
     @Property("reset_date")
     <%_ } _%>
     private Instant resetDate = null;
+
+    <%_ if (databaseType === 'sql' || (databaseType === 'cassandra' && reactive)) { _%>
+    @Column(<% if (!reactive) { %>name = <% } %>"issuperuser")
+    <%_ } else if (databaseType === 'mongodb' || databaseType === 'couchbase') { _%>
+    @Field("issuperuser")
+    <%_ } else if (databaseType === 'neo4j') { _%>
+    @Property("issuperuser")
+    <%_ } _%>
+    private Boolean isSuperUser;
 <%_ } _%>
+
+    @ManyToOne
+    @JoinColumn(name = "vendorid")
+    @JsonIgnoreProperties(value = "users", allowSetters = true)
+    private Vendor vendor;
 
     @JsonIgnore
     <%_ if (databaseType === 'neo4j') { _%>
@@ -466,6 +481,27 @@ public class <%= asEntity('User') %><% if (databaseType === 'sql' || databaseTyp
 
     public void setResetDate(Instant resetDate) {
         this.resetDate = resetDate;
+    }
+
+    public Boolean isIsSuperUser() {
+        return isSuperUser;
+    }
+
+    public void setIsSuperUser(Boolean isSuperUser) {
+        this.isSuperUser = isSuperUser;
+    }
+
+    public Vendor getVendor() {
+        return vendor;
+    }
+
+    public User vendor(Vendor vendor) {
+        this.vendor = vendor;
+        return this;
+    }
+
+    public void setVendor(Vendor vendor) {
+        this.vendor = vendor;
     }
 <%_ } _%>
 
