@@ -164,7 +164,7 @@ import static org.springframework.data.couchbase.core.mapping.id.GenerationStrat
 <%_ } if (searchEngine === 'elasticsearch') { _%>
 @org.springframework.data.elasticsearch.annotations.Document(indexName = "<%= entityInstance.toLowerCase() %>")
 <%_ } _%>
-public class <%= asEntity(entityClass) %> implements Serializable {
+public class <%= asEntity(entityClass) %> extends AbstractAuditingEntity<<%= asEntity(entityClass) %>, <%= primaryKeyType %>> {
 
     private static final long serialVersionUID = 1L;
     <%_ if (databaseType === 'couchbase' && !embedded) { _%>
@@ -337,6 +337,7 @@ public class <%= asEntity(entityClass) %> implements Serializable {
             if (databaseType === 'sql' && !reactive) {
     _%>
     @ManyToOne<% if (relationshipRequired) { %>(optional = false)<% } %>
+    @JoinColumn(name = "<%= relationshipFieldName %>id")
         <%_ if (relationshipValidate) { _%>
     <%- include('relationship_validators'); -%>
         <%_ }

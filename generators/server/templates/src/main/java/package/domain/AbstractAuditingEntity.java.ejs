@@ -58,7 +58,7 @@ import javax.persistence.MappedSuperclass;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 <%_ } _%>
-public abstract class AbstractAuditingEntity implements Serializable {
+public abstract class AbstractAuditingEntity<T, ID> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -66,7 +66,7 @@ public abstract class AbstractAuditingEntity implements Serializable {
     @CreatedBy
     <%_ } _%>
     <%_ if (databaseType === 'sql') { _%>
-    @Column(name = "created_by", nullable = false, length = 50, updatable = false)
+    @Column(name = "createdby", nullable = false, updatable = false)
     <%_ } _%>
     <%_ if (databaseType === 'mongodb' || databaseType === 'couchbase') { _%>
     @Field("created_by")
@@ -75,11 +75,11 @@ public abstract class AbstractAuditingEntity implements Serializable {
     @Property("created_by")
     <%_ } _%>
     @JsonIgnore
-    private String createdBy;
+    private Long createdBy;
 
     @CreatedDate
     <%_ if (databaseType === 'sql') { _%>
-    @Column(name = "created_date", updatable = false)
+    @Column(name = "createdon", updatable = false)
     <%_ } _%>
     <%_ if (databaseType === 'mongodb' || databaseType === 'couchbase') { _%>
     @Field("created_date")
@@ -88,13 +88,13 @@ public abstract class AbstractAuditingEntity implements Serializable {
     @Property("created_date")
     <%_ } _%>
     @JsonIgnore
-    private Instant createdDate = Instant.now();
+    private Instant createdOn = Instant.now();
 
     <%_ if (!reactive) { _%>
     @LastModifiedBy
     <%_ } _%>
     <%_ if (databaseType === 'sql') { _%>
-    @Column(name = "last_modified_by", length = 50)
+    @Column(name = "modifiedby")
     <%_ } _%>
     <%_ if (databaseType === 'mongodb' || databaseType === 'couchbase') { _%>
     @Field("last_modified_by")
@@ -103,11 +103,11 @@ public abstract class AbstractAuditingEntity implements Serializable {
     @Property("last_modified_by")
     <%_ } _%>
     @JsonIgnore
-    private String lastModifiedBy;
+    private Long modifiedBy;
 
     @LastModifiedDate
     <%_ if (databaseType === 'sql') { _%>
-    @Column(name = "last_modified_date")
+    @Column(name = "modifiedon")
     <%_ } _%>
     <%_ if (databaseType === 'mongodb' || databaseType === 'couchbase') { _%>
     @Field("last_modified_date")
@@ -116,37 +116,47 @@ public abstract class AbstractAuditingEntity implements Serializable {
     @Property("last_modified_date")
     <%_ } _%>
     @JsonIgnore
-    private Instant lastModifiedDate = Instant.now();
+    private Instant modifiedOn = Instant.now();
 
-    public String getCreatedBy() {
+    public Long getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(String createdBy) {
+    public AbstractAuditingEntity<T, ID> createdBy(Long createdBy) {
+        this.createdBy = createdBy;
+        return this;
+    }
+
+    public void setCreatedBy(Long createdBy) {
         this.createdBy = createdBy;
     }
 
-    public Instant getCreatedDate() {
-        return createdDate;
+    public Instant getCreatedOn() {
+        return createdOn;
     }
 
-    public void setCreatedDate(Instant createdDate) {
-        this.createdDate = createdDate;
+    public void setCreatedOn(Instant createdOn) {
+        this.createdOn = createdOn;
     }
 
-    public String getLastModifiedBy() {
-        return lastModifiedBy;
+    public Long getModifiedBy() {
+        return modifiedBy;
     }
 
-    public void setLastModifiedBy(String lastModifiedBy) {
-        this.lastModifiedBy = lastModifiedBy;
+    public AbstractAuditingEntity<T, ID> modifiedBy(Long modifiedBy) {
+        this.modifiedBy = modifiedBy;
+        return this;
     }
 
-    public Instant getLastModifiedDate() {
-        return lastModifiedDate;
+    public void setModifiedBy(Long modifiedBy) {
+        this.modifiedBy = modifiedBy;
     }
 
-    public void setLastModifiedDate(Instant lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
+    public Instant getModifiedOn() {
+        return modifiedOn;
+    }
+
+    public void setModifiedOn(Instant modifiedOn) {
+        this.modifiedOn = modifiedOn;
     }
 }
